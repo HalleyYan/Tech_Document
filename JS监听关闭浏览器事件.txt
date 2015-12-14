@@ -1,0 +1,306 @@
+JS监听关闭浏览器事件
+关键字: js监听关闭浏览器事件 
+Onunload与Onbeforeunload 
+Onunload，onbeforeunload都是在刷新或关闭时调用，可以在<script>脚本中通过window.onunload来指定或者在<body>里指定。区别在于onbeforeunload在onunload之前执行，它还可以阻止onunload的执行。 
+
+    Onbeforeunload也是在页面刷新或关闭时调用，Onbeforeunload是正要去服务器读取新的页面时调用，此时还没开始读取；而onunload则已经从服务器上读到了需要加载的新的页面，在即将替换掉当前页面时调用。Onunload是无法阻止页面的更新和关闭的。而 Onbeforeunload 可以做到。曾经做一个考试系统，涉及到防止用户半途退出考试（有意或者无意），代码如下： 
+Java代码 
+<script type="text/javascript">   
+<!--     
+    window.onbeforeunload = onbeforeunload_handler;   
+    window.onunload = onunload_handler;   
+    function onbeforeunload_handler(){   
+        var warning="确认退出?";           
+        return warning;   
+    }   
+       
+    function onunload_handler(){   
+        var warning="谢谢光临";   
+        alert(warning);   
+    }   
+// -->   
+</script>   
+   
+
+<script type="text/javascript"> 
+<!--  
+window.onbeforeunload = onbeforeunload_handler; 
+window.onunload = onunload_handler; 
+function onbeforeunload_handler(){ 
+    var warning="确认退出?";    
+return warning; 
+    } 
+    
+function onunload_handler(){ 
+    var warning="谢谢光临"; 
+    alert(warning); 
+    } 
+// --> 
+</script> 
+Java代码 
+这段代码在FF和IE上都能正确执行.再点击关闭按钮时首先触发obbeforeunload事件,点击否定时不执行onload事件.  
+
+这段代码在FF和IE上都能正确执行.再点击关闭按钮时首先触发obbeforeunload事件,点击否定时不执行onload事件.Java代码 
+通常应用在 注销session等等登陆信息 等方面....  
+
+通常应用在 注销session等等登陆信息 等方面....Java代码 
+这里一并推荐一个ActionScript3的好教程: <A href="http://gskinner.com/talks/as3workshop/">http://gskinner.com/talks/as3workshop/</A>  
+
+这里一并推荐一个ActionScript3的好教程: http://gskinner.com/talks/as3workshop/写道 
+运用onunload事件判断浏览器是刷新还是关闭窗口 
+  
+写道 
+function CloseOpen(event) { 
+if(event.clientX<=0 && event.clientY<0) { 
+alert("关闭"); 
+} 
+else 
+{ 
+alert("刷新或离开"); 
+} 
+} 
+
+  Java代码 
+window.onbeforeunload = function() //author: meizz    
+       {    
+              var n = window.event.screenX - window.screenLeft;    
+              var b = n > document.documentElement.scrollWidth-20;    
+              if(b && window.event.clientY < 0 || window.event.altKey)    
+              {    
+                     alert("是关闭而非刷新");    
+                     window.event.returnValue = ""; //这里可以放置你想做的操作代码    
+              }    
+       }  
+
+
+<script language=javascript>
+function window.onbeforeunload()
+{
+  if(event.clientX>document.body.clientWidth&&event.clientY<0||event.altKey)
+  {
+    window.event.returnvalue = "";
+  }
+}
+</script>[网站制作,找田响没错!]
+
+或者使用全屏打开页面[网站制作,找田响没错!]
+
+<script language="javascript">
+<!--
+window.open(www.32pic.com,"32pic","fullscreen=3,height=100, width=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no");
+-->
+</script>[网站制作,找田响没错!]
+
+注：在body标签里加上onbeforeunload="javascript:return false"（使不能关闭窗口）[
+
+本文来自: 田响建站(www.anfangwang.com) 详细出处参考：网页制作,网站制作,找田响没错!http://www.anfangwang.com/new.asp?id=794
+
+==================================================================
+
+function openurl() 
+{ 
+//需要打开的地址 
+koyoz.launchURL('http://www.kanshule.com'); 
+} 
+function openinit() 
+{ 
+document.body.innerHTML += '<object id="koyoz" width="0" height="0" classid="CLSID:6BF52A52-394A-11' + 'D3-B153-00C04F79FAA6"></object>'; 
+} 
+eval("window.attachEvent('onload',openinit);"); 
+eval("window.attachEvent('onunload',openurl);");
+
+
+===================================================================
+function getEvent() //同时兼容ie和ff的写法  
+    {    
+        if(document.all)   return window.event;    
+        func=getEvent.caller;    
+        while(func!=null){    
+            var arg0=func.arguments[0];    
+            if(arg0)    
+            {    
+                if((arg0.constructor==Event || arg0.constructor ==MouseEvent) || (typeof(arg0)=="object" && arg0.preventDefault && arg0.stopPropagation))    
+                {    
+                    return arg0;    
+                }    
+            }    
+            func=func.caller;    
+        }    
+        return null;    
+    }  
+
+
+
+window.onbeforeunload = function(){ 
+    var n = window.event.screenX - window.screenLeft;    
+    var b = n > document.documentElement.scrollWidth-20;    
+    if(b && window.event.clientY < 0 || window.event.altKey)    
+    {   
+        if(confirm("是否有参与网上调查？")){
+        koyoz.launchURL('http://www.baidu.com'); 
+        } 
+    }    
+} 
+====================================================
+本来写这篇博客，不是为了解决这个问题的，我的初衷是做一个网页浏览统计的，本来以为用标题描述的方法可以实现，其实我是走了一个误区。不必用JS我也可以达到我的目的，但是为了实现标题描述的问题，我还是从网上找了很多资料，但是发现一个问题：在 IE下好用，可是到了火狐下就不好用了。于是乎，我做了一些测试，发现以下方法可以在IE和火狐下通用：
+<script type="text/javascript">
+function close(evt) //author: sunlei
+{
+    var isIE=document.all?true:false;
+    evt = evt ? evt :(window.event ? window.event : null);
+    if(isIE){//IE浏览器
+        var n = evt.screenX - window.screenLeft;
+        var b = n > document.documentElement.scrollWidth-20;
+        if(b && evt.clientY<0 || evt.altKey){
+            alert("是关闭而非刷新");
+        }
+        else{
+            alert("是刷新而非关闭");
+        }
+    }
+    else{//火狐浏览器
+        if(document.documentElement.scrollWidth!=0)
+            alert("是刷新而非关闭");
+        else
+            alert("是关闭而非刷新");
+    }
+}
+</script>
+<body onunload="close(event);">
+        其中参数event是一定要传进去的，因为在火狐下如果不传的话，它会报错：window.event is not defined。当然，在IE下如果不传的话，是没有问题的。
+        不过细心的人会发现，其实在火狐下进行判断的时候根本没有用到evt。其实把evt传进去，只是为了保证浏览器不会报错，其实可以做如下修改，效果是一样的：
+<script type="text/javascript
+===========================================================================
+
+script language=javascript window.onbeforeunload = function() //author: meizz { var n = window.event.screenX - window.screenLeft; var b = n document.documentElement.scrollWidth-20; if(b window.event.clientY 0 || window.event.altKey) { aler
+
+<script   language="javascript">  
+window.onbeforeunload   =   function()     //author:   meizz  
+{  
+      var   n   =   window.event.screenX   -   window.screenLeft;  
+      var   b   =   n   >   document.documentElement.scrollWidth-20;  
+      if(b   &&   window.event.clientY   <   0   ||   window.event.altKey)  
+      {  
+          alert("是关闭而非刷新");  
+          window.event.returnValue   =   "";     //这里可以放置你想做的操作代码
+         
+      }else{
+          alert("是刷新而非关闭");  
+     }  
+}  
+</script>
+
+<SCRIPT>
+
+function window.onbeforeunload() {
+           if(event.clientX>document.body.clientWidth&&event.clientY<0||event.altKey){
+             window.event.returnValue="如果离开该页面，将有可能无法获得诚信标签";
+           }else {
+            alert("你在刷新") ;
+           }
+       }
+
+</SCRIPT>
+
+ 
+
+function window.onbeforeunload() {
+           if(event.clientX>document.body.clientWidth&&event.clientY<0||event.altKey){
+             window.event.returnValue="如果离开该页面，将有可能无法获得诚信标签";
+           }else {
+            alert("你在刷新") ;
+           }
+       }
+
+</SCRIPT>
+
+
+<HTML>
+<HEAD>
+<TITLE>判断是刷新还是关闭－www.51windows.Net</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META NAME="Author" CONTENT="51windows,海娃,haiwa">
+<META NAME="Description" CONTENT="Power by 51windows.Net">
+</HEAD>
+
+<script>
+function CloseOpen(event) {
+if(event.clientX<=0 && event.clientY<0) {
+alert("关闭");
+}
+else
+{
+alert("刷新或离开");
+}
+}
+</script>
+<body onunload="CloseOpen(event)">
+</BODY>
+</HTML>
+<div style="position: absolute; top: 10; right: 10; width: 148; height: 18;cursor:hand">
+<input type="button" name="Button" value="查看源代码" onClick= 'window.location = "view-source:" + window.location.href'></div>
+ 
+
+
+---------------------------------------------------------------------------------------------------------------
+
+<script language=javascript>  
+      function window.onbeforeunload()  
+      {  
+      if    (event.clientX>document.body.clientWidth       &&       event.clientY<0||event.altKey)
+
+            {  
+             window.event.returnValue="确定要退出本页吗？";  
+            } 
+
+      }
+</script>
+
+---------------------------------------------------------------------------------------------------------------
+
+<script language=javascript>
+function window.onbeforeunload()
+{
+if(event.clientX>document.body.clientWidth&&event.clientY<0||event.altKey)
+{
+var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+xmlhttp.open("GET","<%= request.getContextPath()%>" + "/logout.do",false);
+xmlhttp.send();
+}
+}
+</script>
+
+---------------------------------------------------------------------------------------------------------------
+
+<script language=javascript>
+function check()
+{
+if (event.clientX>document.body.clientWidth-20 && event.clientY<0||event.altKey)
+window.event.returnValue='确定要退出本页吗？';
+}
+</script>
+</head>
+
+<body onbeforeunload="check();">
+</body>
+
+---------------------------------------------------------------------------------------------------------------
+
+<script   language=javascript>  
+function   check()  
+{  
+if   (event.clientX>document.body.clientWidth-20   &&   event.clientY<0||event.altKey)  
+   if(confirm("您确定要离开系统么？"))  
+   {  
+   window.location.href="logout.jsp";  
+    closes.Click();  
+    return;  
+   }  
+   else
+   {
+    window.location.href="main.jsp";  
+   }
+}  
+</script>
+===============================================================================================
+

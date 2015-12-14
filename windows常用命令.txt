@@ -1,0 +1,327 @@
+1    dcpromo------- 安装域控制器
+
+2     dsa.msc-------打开AD用户和计算机
+
+3    dssite.msc-------打开AD站点和服务
+
+4    domain.msc-------打开AD域和信任关系
+
+5    dnsmgmt.msc-------打开DNS服务器
+
+6    services.msc-------   打开服务
+
+7    MMC-------（管理控制台）
+
+8    compmgmt.msc------- 计算机管理控制台
+
+9    devmgmt.msc------- 设备管理器控制台
+
+10 diskmgmt.msc------- 磁盘管理器控制台
+
+11 eventvwr.msc------- 日志管理器控制台
+
+12 fsmgmt.msc------- 共享文件夹控制台
+
+13 gpedit.msc------- 组策略管理控制台
+
+14 iis6.msc iis-------管理控制台
+
+15 lusrmgr.msc------- 本地账户管理控制台
+
+16 napclcfg.msc------- NAP管理控制台
+
+17 printmanagement.msc------- 打印管理控制台
+
+18 rsop.msc------- 组策略结果集控制台
+
+19 wf.msc------- 防火墙管理控制台
+
+20 lusrmgr.msc------- 本机用户和组
+
+21 devmgmt.msc-------设备管理器
+
+22 rsop.msc-------组策略结果集
+
+23 secpol.msc-------本地安全策略
+
+24 services.msc-------本地服务设置
+
+25 dfrg.msc-------磁盘碎片整理程序
+
+26 diskmgmt.msc-------磁盘管理实用程序
+
+27 dsa.msc-------打开域用户和计算机工具
+
+28 lusrmgr.msc-------打开本地用户和组
+
+29 gpupdate /force-------刷新策略
+
+30 filesvr.msc-------管理共享文件夹
+
+31 dhcpmgmt.msc-------打开DHCP服务器
+
+32 inetmgr-------打开IIS组件
+
+33 网络服务组件名+mgmt.msc-------打开网络网络服务组件
+
+34 certmgr.msc证书管理实用程序
+
+35 ciadv.msc-----索引服务程序
+
+36 dfrg.msc-----磁盘碎片整理程序 
+
+37 diskmgmt.msc-----磁盘管理实用程序
+
+38 fsmgmt.msc-----共享文件夹管理器
+
+39 azman.msc-----授权管理器
+
+40 certsrv.msc-----证书服务
+
+41 certtmpl.msc-----证书模版
+
+42 dcpol.msc-----控制台安全策略
+
+43 devmgmt.msc-----设备管理器
+
+44 dfsgui.msc-----分布式文件系统
+
+45 fxsadmin.msc-----传真服务器管理
+
+46 filesuer.msc-----文件服务器管理
+
+47 ias.msc-----因特网验证服务
+
+48 rrasmgmt.msc-----路由选择和远程访问
+
+49 comexp.msc-----组件服务，可以打开本地服务
+
+50 tapimgmt.msc-----电话服务
+
+51 taskschd.msc-----任务计划程序
+
+52 tpm.msc-----TPM 管理
+
+53 tsmmc.msc-----远程桌面
+
+54 wbadmin.msc-----服务器备份管理
+
+55 tsadmin.msc-----终端服务管理器
+
+56 tsconfig.msc-----终端服务配置
+
+二 系统管理工具
+
+1 compmgmt.msc-------计算机管理
+
+2 diskmgmt.msc-------磁盘管理实用程序
+
+3 net start messenger------- 开始信使服务
+
+4 net stop messenger------- 停止信使服务
+
+5 perfmon.msc------- 计算机性能监测程序
+
+6 taskmgr-------任务管理器(2000／xp／2003)
+
+7 wmimgmt.msc-------打开windows管理体系结构(WMI)
+
+8 ntmsmgr.msc-------移动存储管理器
+
+9 ntmsoprq.msc-------移动存储管理员操作请求
+
+10 taskmgr-------任务管理器
+
+11 eventvwr-------事件查看器
+
+12 sysedit-------系统配置编辑器
+
+13 iexpress-------木马捆绑工具，系统自带
+
+14 whoami /user-------查看当前用户的SID
+
+15 tasklist.exe-------列出所有的进程
+
+16 ntsd -c q -p    PID-------查杀进程
+
+17 msinfo32-------打开系统管理器
+
+18 tracert-------跟踪ip数据包到达目的地经过的路由
+
+19 route print -------显示本机路由表
+
+20 mstsc-------打开远程桌面连接
+
+21 syskey-------打开账号数据库安全加密设置
+
+22 net stop netlogon-------关闭dns中的srv资源记录
+
+23 net start netlogon-------启动dns中的srv资源记录
+
+24 convert f:/fs:ntfs -------把f盘转换成ntfs格式
+
+25 ntbackup.exe-------打开windows自带备份工具
+
+26 msconfig.exe-------打开系统配置实用程序
+
+27 ntdsutil-------用来破还原密码
+
+28 diskpart-------打开磁盘管理工具
+
+29 osk-------打开屏幕键盘
+
+30 cleanmgr.exe-------windows自带的垃圾整理工具
+
+31 logoff-------注销命令
+
+32 tsshutdn-------60秒倒计时关机命令
+
+33 notepad-------打开记事本
+
+34 charmap-------启动字符映射表
+
+35 conf-------启动netmeeting
+
+36 calc-------启动计算机
+
+37 dfrg.msc-------磁盘碎片整理程序
+
+38 chkdsk.exe-------chkdsk磁盘检查
+
+39 devmgmt.msc-------设备管理器
+
+40 drwtsn32-------系统医生
+
+41 rononce -p -------15秒关机
+
+42 mem.exe-------显示内存使用情况
+
+43 winchat-------xp自带局域网聊天工具
+
+44 promgman-------程序管理器
+
+45 winmsd-------系统信息
+
+46 perfmon.msc-------计算机性能检测程序
+
+47 sfc /scannow-------扫描错误并复原
+
+48 wmimgmt.msc-------打开windows管理体系结构(wmi)
+
+49 write-------写字板
+
+50 wiaacmgr------扫描仪和照相机向导
+
+51 mstsc-------远程桌面
+
+52 mplayer2-------简易windows media play
+
+53 mspaint-------画图板
+
+54 magnify-------放大镜实用程序
+
+55 mobsync-------同步命令
+
+56 dxdiag-------检查directx信息
+
+57 nslookup-------网络管理的工具向导
+
+58 ntbackup-------系统备份和还原
+
+59 narrator-------屏幕讲述人
+
+60 ntmsmgr.msc-------移动储蓄管理器
+
+61 ntmsoprq.msc-------移动储蓄管理员操作请求
+
+62 netstar -an-------(tc)命令检查接口
+
+63 syncapp-------创建一个公文包
+
+64 sysedit-------系统配置编辑器
+
+65 sigverif-------文件签名验证程序
+
+66 sndrec32-------录音机
+
+67 shrpubw-------创建共享文件夹
+
+68 sndwol32-------音量控制程序
+
+69 sfc.exe-------系统文件检查器
+
+70 eventvr-------事件查看器
+
+71 eudcedit-------造子程序
+
+72 packager-------对象包装程序
+
+73 fsmgmt.msc-------共享文件夹管理器
+
+74 utilman-------辅助工具管理器
+
+75 at.exe-------运行计划任务
+
+76 arp.exe-------显示arp路由
+
+77 hypertrm-------超级终端
+
+78 control-------控制面板
+
+79 eventvwr-------事件查看器
+
+80 fxsclnt-------fax console 传真控制台
+
+81 fxscover-------传真编辑器
+
+82 appwiz.cpl -------添加删除程序
+
+83 hdwwiz.cpl-------添加硬件
+
+84 inetcpl.cpl-------Internet选项
+
+85 intl.cpl-------区域和语言选项
+
+86 joy.cpl-------游戏控制器
+
+87 mmsys.cpl-------声音和音频设备
+
+88 ncpa.cpl-------网络连接
+
+89 odbccp32.cpl-------odbc数据库资源管理器
+
+90 sysdm.cpl-------系统属性
+
+91 syncapp--------创建一个公文包
+
+92 notepad--------打开记事本 
+
+93 shrpubw--------创建共享文件夹
+
+94 progman--------程序管理器
+
+95 calc-----------启动计算器 
+
+96 utilman--------辅助工具管理器
+
+97 magnify--------放大镜实用程序
+
+98 mspaint--------画图板
+
+99 write--------写字板
+
+100 conf--------netmeeting
+
+101 sfc /scannow--------系统文件检查器，如果文件损坏，会要求插入系统盘进行修复
+
+102 ntsd -c q -p PID--------强制终止进程(除System、SMSS.EXE和CSRSS.EXE不能杀)
+
+103 tskill 进程名--------终止进程
+
+104 tasklist--------列出是有的进程
+
+105 control userpasswords2--------开启用户账号管理程序
+
+106 systeminfo--------列出系统信息
+
+107 cls--------DOS界面下清屏

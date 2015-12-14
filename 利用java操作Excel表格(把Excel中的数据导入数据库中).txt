@@ -1,0 +1,602 @@
+利用java操作Excel表格（把Excel中的数据导入数据库中）
+0.加入依赖的jar文件 
+
+引用
+
+*mysql的jar文件 
+*Spring_HOME/lib/poi/*.jar 
+
+
+1.编写数据库链接类 
+
+Java代码 
+1.package com.zzg.db;   
+2.  
+3.import java.sql.Connection;   
+4.import java.sql.DriverManager;   
+5.  
+6.public class DbUtils {   
+7.    private static Connection conn;   
+8.  
+9.    static {   
+10.        try {   
+11.            Class.forName("com.mysql.jdbc.Driver");   
+12.            conn = DriverManager.getConnection("jdbc:mysql://localhost/test","root","123456");   
+13.        } catch (Exception e) {   
+14.            e.printStackTrace();   
+15.        }   
+16.    }   
+17.  
+18.    public static Connection getConn() {   
+19.        return conn;   
+20.    }   
+21.  
+22.    public static void setConn(Connection conn) {   
+23.        DbUtils.conn = conn;   
+24.    }   
+25.}  
+package com.zzg.db;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DbUtils {
+	private static Connection conn;
+
+	static {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/test","root","123456");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Connection getConn() {
+		return conn;
+	}
+
+	public static void setConn(Connection conn) {
+		DbUtils.conn = conn;
+	}
+}
+
+
+2.编写数据库操作类 
+
+Java代码 
+1.package com.zzg.db;   
+2.  
+3.import java.sql.Connection;   
+4.import java.sql.PreparedStatement;   
+5.import java.sql.SQLException;   
+6.  
+7.public class ExcuteData {   
+8.    private PreparedStatement pstmt;   
+9.    public boolean ExcuData(String sql) {   
+10.        Connection conn = DbUtils.getConn();   
+11.        boolean flag=false;   
+12.        try {   
+13.            pstmt = conn.prepareStatement(sql);   
+14.            flag=pstmt.execute();   
+15.        } catch (SQLException e) {   
+16.            e.printStackTrace();   
+17.        }   
+18.        return flag;   
+19.    }   
+20.}  
+package com.zzg.db;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class ExcuteData {
+	private PreparedStatement pstmt;
+	public boolean ExcuData(String sql) {
+		Connection conn = DbUtils.getConn();
+		boolean flag=false;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			flag=pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+}
+
+
+3.编写Excel表格实体类 
+
+Java代码 
+1.package com.zzg.model;   
+2.  
+3.public class TableCell {   
+4.    private String _name;   
+5.    private String _value;   
+6.  
+7.    public String get_name() {   
+8.        return _name;   
+9.    }   
+10.  
+11.    public void set_name(String _name) {   
+12.        this._name = _name;   
+13.    }   
+14.  
+15.    public String get_value() {   
+16.        return _value;   
+17.    }   
+18.  
+19.    public void set_value(String _value) {   
+20.        this._value = _value;   
+21.    }   
+22.}  
+package com.zzg.model;
+
+public class TableCell {
+	private String _name;
+	private String _value;
+
+	public String get_name() {
+		return _name;
+	}
+
+	public void set_name(String _name) {
+		this._name = _name;
+	}
+
+	public String get_value() {
+		return _value;
+	}
+
+	public void set_value(String _value) {
+		this._value = _value;
+	}
+}
+
+
+4.编写主键生成方法 
+
+Java代码 
+1.package com.zzg.util;   
+2.  
+3.import java.text.SimpleDateFormat;   
+4.import java.util.Date;   
+5.import java.util.Random;   
+6.  
+7.public class GenericUtil {   
+8.    public static String getPrimaryKey()   
+9.    {   
+10.        String primaryKey;   
+11.        primaryKey = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());   
+12.        Random r = new Random();   
+13.        primaryKey +=r.nextInt(100000)+100000;   
+14.        return primaryKey;   
+15.    }   
+16.}  
+package com.zzg.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
+public class GenericUtil {
+	public static String getPrimaryKey()
+	{
+		String primaryKey;
+		primaryKey = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		Random r = new Random();
+		primaryKey +=r.nextInt(100000)+100000;
+		return primaryKey;
+	}
+}
+
+
+5.编写Excel操作类 
+
+Java代码 
+1.package com.zzg.deployData;   
+2.  
+3.import java.io.File;   
+4.import java.io.FileInputStream;   
+5.import java.io.FileNotFoundException;   
+6.import java.io.IOException;   
+7.import java.io.Serializable;   
+8.import java.util.ArrayList;   
+9.import java.util.List;   
+10.import org.apache.poi.hssf.usermodel.HSSFCell;   
+11.import org.apache.poi.hssf.usermodel.HSSFRow;   
+12.import org.apache.poi.hssf.usermodel.HSSFSheet;   
+13.import org.apache.poi.hssf.usermodel.HSSFWorkbook;   
+14.import com.zzg.db.ExcuteData;   
+15.import com.zzg.model.TableCell;   
+16.import com.zzg.util.GenericUtil;   
+17.  
+18.public class OperExcel<T extends Serializable> {   
+19.    private HSSFWorkbook workbook;   
+20.    private String tableName;   
+21.    private Class<T> type;   
+22.    private String sheetName;   
+23.  
+24.    public OperExcel(File excelFile, String tableName, Class<T> type,   
+25.            String sheetName) throws FileNotFoundException,   
+26.            IOException {   
+27.        workbook = new HSSFWorkbook(new FileInputStream(excelFile));   
+28.        this.tableName = tableName;   
+29.        this.type = type;   
+30.        this.sheetName = sheetName;   
+31.        InsertData();   
+32.    }   
+33.  
+34.    // 向表中写入数据   
+35.    public void InsertData() {   
+36.        System.out.println("yyy");   
+37.        ExcuteData excuteData = new ExcuteData();   
+38.        List<List> datas = getDatasInSheet(this.sheetName);   
+39.        // 向表中添加数据之前先删除表中数据   
+40.        String strSql = "delete from " + this.tableName;   
+41.        excuteData.ExcuData(strSql);   
+42.        // 拼接sql语句   
+43.        for (int i = 1; i < datas.size(); i++) {   
+44.            strSql = "insert into " + this.tableName + "(";   
+45.            List row = datas.get(i);   
+46.            for (short n = 0; n < row.size(); n++) {   
+47.                TableCell excel = (TableCell) row.get(n);   
+48.                if (n != row.size() - 1)   
+49.                    strSql += excel.get_name() + ",";   
+50.                else  
+51.                    strSql += excel.get_name() + ")";   
+52.            }   
+53.            strSql += " values (";   
+54.            for (short n = 0; n < row.size(); n++) {   
+55.                TableCell excel = (TableCell) row.get(n);   
+56.                try {   
+57.                    if (n != row.size() - 1) {   
+58.                        strSql += getTypeChangeValue(excel) + ",";   
+59.                    } else  
+60.                        strSql += getTypeChangeValue(excel) + ")";   
+61.                } catch (RuntimeException e) {   
+62.                    e.printStackTrace();   
+63.                } catch (Exception e) {   
+64.                    e.printStackTrace();   
+65.                }   
+66.            }   
+67.            //执行sql   
+68.            excuteData.ExcuData(strSql);   
+69.        }   
+70.    }   
+71.  
+72.    /**  
+73.     * 获得表中的数据  
+74.     * @param sheetName 表格索引(EXCEL 是多表文档,所以需要输入表索引号)  
+75.     * @return 由LIST构成的行和表  
+76.     */  
+77.    public List<List> getDatasInSheet(String sheetName) {   
+78.        List<List> result = new ArrayList<List>();   
+79.        // 获得指定的表   
+80.        HSSFSheet sheet = workbook.getSheet(sheetName);   
+81.        // 获得数据总行数   
+82.        int rowCount = sheet.getLastRowNum();   
+83.        if (rowCount < 1) {   
+84.            return result;   
+85.        }   
+86.        // 逐行读取数据   
+87.        for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {   
+88.            // 获得行对象   
+89.            HSSFRow row = sheet.getRow(rowIndex);   
+90.            if (row != null) {   
+91.                List<TableCell> rowData = new ArrayList<TableCell>();   
+92.                // 获得本行中单元格的个数   
+93.                int columnCount = sheet.getRow(0).getLastCellNum();   
+94.                // 获得本行中各单元格中的数据   
+95.                for (short columnIndex = 0; columnIndex < columnCount; columnIndex++) {   
+96.                    HSSFCell cell = row.getCell(columnIndex);   
+97.                    // 获得指定单元格中数据   
+98.                    Object cellStr = this.getCellString(cell);   
+99.                    TableCell TableCell = new TableCell();   
+100.                    TableCell.set_name(getCellString(   
+101.                            sheet.getRow(0).getCell(columnIndex)).toString());   
+102.                    TableCell.set_value(cellStr == null ? "" : cellStr   
+103.                            .toString());   
+104.                    rowData.add(TableCell);   
+105.                }   
+106.                result.add(rowData);   
+107.            }   
+108.        }   
+109.        return result;   
+110.    }   
+111.  
+112.    /**  
+113.     * 获得单元格中的内容  
+114.     *   
+115.     * @param cell  
+116.     * @return result  
+117.     */  
+118.    protected Object getCellString(HSSFCell cell) {   
+119.        Object result = null;   
+120.        if (cell != null) {   
+121.            int cellType = cell.getCellType();   
+122.            switch (cellType) {   
+123.  
+124.            case HSSFCell.CELL_TYPE_STRING:   
+125.                result = cell.getStringCellValue();   
+126.                break;   
+127.            case HSSFCell.CELL_TYPE_NUMERIC:   
+128.                result = cell.getNumericCellValue();   
+129.                break;   
+130.            case HSSFCell.CELL_TYPE_FORMULA:   
+131.                result = cell.getNumericCellValue();   
+132.                break;   
+133.            case HSSFCell.CELL_TYPE_ERROR:   
+134.                result = null;   
+135.                break;   
+136.            case HSSFCell.CELL_TYPE_BOOLEAN:   
+137.                result = cell.getBooleanCellValue();   
+138.                break;   
+139.            case HSSFCell.CELL_TYPE_BLANK:   
+140.                result = null;   
+141.                break;   
+142.            }   
+143.        }   
+144.        return result;   
+145.    }   
+146.  
+147.    // 根据类型返回相应的值   
+148.    @SuppressWarnings("unchecked")   
+149.    public String getTypeChangeValue(TableCell excelElement)   
+150.            throws RuntimeException, Exception {   
+151.        String colName = excelElement.get_name();   
+152.        String colValue = excelElement.get_value();   
+153.        String retValue = "";   
+154.        if (colName.equals("id")) {   
+155.            retValue = "'" + GenericUtil.getPrimaryKey() + "'";   
+156.            return retValue;   
+157.        }   
+158.        if (colName == null) {   
+159.            retValue = null;   
+160.        }   
+161.        if (colName.equals("class_createuser")) {   
+162.            retValue = "yaa101";   
+163.            return "'" + retValue + "'";   
+164.        }   
+165.        retValue = "'" + colValue + "'";   
+166.        return retValue;   
+167.    }   
+168.}  
+package com.zzg.deployData;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.zzg.db.ExcuteData;
+import com.zzg.model.TableCell;
+import com.zzg.util.GenericUtil;
+
+public class OperExcel<T extends Serializable> {
+	private HSSFWorkbook workbook;
+	private String tableName;
+	private Class<T> type;
+	private String sheetName;
+
+	public OperExcel(File excelFile, String tableName, Class<T> type,
+			String sheetName) throws FileNotFoundException,
+			IOException {
+		workbook = new HSSFWorkbook(new FileInputStream(excelFile));
+		this.tableName = tableName;
+		this.type = type;
+		this.sheetName = sheetName;
+		InsertData();
+	}
+
+	// 向表中写入数据
+	public void InsertData() {
+		System.out.println("yyy");
+		ExcuteData excuteData = new ExcuteData();
+		List<List> datas = getDatasInSheet(this.sheetName);
+		// 向表中添加数据之前先删除表中数据
+		String strSql = "delete from " + this.tableName;
+		excuteData.ExcuData(strSql);
+		// 拼接sql语句
+		for (int i = 1; i < datas.size(); i++) {
+			strSql = "insert into " + this.tableName + "(";
+			List row = datas.get(i);
+			for (short n = 0; n < row.size(); n++) {
+				TableCell excel = (TableCell) row.get(n);
+				if (n != row.size() - 1)
+					strSql += excel.get_name() + ",";
+				else
+					strSql += excel.get_name() + ")";
+			}
+			strSql += " values (";
+			for (short n = 0; n < row.size(); n++) {
+				TableCell excel = (TableCell) row.get(n);
+				try {
+					if (n != row.size() - 1) {
+						strSql += getTypeChangeValue(excel) + ",";
+					} else
+						strSql += getTypeChangeValue(excel) + ")";
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			//执行sql
+			excuteData.ExcuData(strSql);
+		}
+	}
+
+	/**
+	 * 获得表中的数据
+	 * @param sheetName 表格索引(EXCEL 是多表文档,所以需要输入表索引号)
+	 * @return 由LIST构成的行和表
+	 */
+	public List<List> getDatasInSheet(String sheetName) {
+		List<List> result = new ArrayList<List>();
+		// 获得指定的表
+		HSSFSheet sheet = workbook.getSheet(sheetName);
+		// 获得数据总行数
+		int rowCount = sheet.getLastRowNum();
+		if (rowCount < 1) {
+			return result;
+		}
+		// 逐行读取数据
+		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+			// 获得行对象
+			HSSFRow row = sheet.getRow(rowIndex);
+			if (row != null) {
+				List<TableCell> rowData = new ArrayList<TableCell>();
+				// 获得本行中单元格的个数
+				int columnCount = sheet.getRow(0).getLastCellNum();
+				// 获得本行中各单元格中的数据
+				for (short columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+					HSSFCell cell = row.getCell(columnIndex);
+					// 获得指定单元格中数据
+					Object cellStr = this.getCellString(cell);
+					TableCell TableCell = new TableCell();
+					TableCell.set_name(getCellString(
+							sheet.getRow(0).getCell(columnIndex)).toString());
+					TableCell.set_value(cellStr == null ? "" : cellStr
+							.toString());
+					rowData.add(TableCell);
+				}
+				result.add(rowData);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 获得单元格中的内容
+	 * 
+	 * @param cell
+	 * @return result
+	 */
+	protected Object getCellString(HSSFCell cell) {
+		Object result = null;
+		if (cell != null) {
+			int cellType = cell.getCellType();
+			switch (cellType) {
+
+			case HSSFCell.CELL_TYPE_STRING:
+				result = cell.getStringCellValue();
+				break;
+			case HSSFCell.CELL_TYPE_NUMERIC:
+				result = cell.getNumericCellValue();
+				break;
+			case HSSFCell.CELL_TYPE_FORMULA:
+				result = cell.getNumericCellValue();
+				break;
+			case HSSFCell.CELL_TYPE_ERROR:
+				result = null;
+				break;
+			case HSSFCell.CELL_TYPE_BOOLEAN:
+				result = cell.getBooleanCellValue();
+				break;
+			case HSSFCell.CELL_TYPE_BLANK:
+				result = null;
+				break;
+			}
+		}
+		return result;
+	}
+
+	// 根据类型返回相应的值
+	@SuppressWarnings("unchecked")
+	public String getTypeChangeValue(TableCell excelElement)
+			throws RuntimeException, Exception {
+		String colName = excelElement.get_name();
+		String colValue = excelElement.get_value();
+		String retValue = "";
+		if (colName.equals("id")) {
+			retValue = "'" + GenericUtil.getPrimaryKey() + "'";
+			return retValue;
+		}
+		if (colName == null) {
+			retValue = null;
+		}
+		if (colName.equals("class_createuser")) {
+			retValue = "yaa101";
+			return "'" + retValue + "'";
+		}
+		retValue = "'" + colValue + "'";
+		return retValue;
+	}
+}
+
+
+6.编写调用操作Excel类的方法 
+
+Java代码 
+1.package com.zzg.deployData;   
+2.  
+3.import java.io.File;   
+4.import java.io.FileNotFoundException;   
+5.import java.io.IOException;   
+6.  
+7.public class DeployData {   
+8.    private File fileOut;   
+9.  
+10.    public void excute(String filepath) {   
+11.        fileOut = new File(filepath);   
+12.        this.deployUserInfoData();   
+13.    }   
+14.  
+15.    public void deployUserInfoData() {   
+16.        try {   
+17.            new OperExcel(fileOut, "test", Object.class, "Sheet1");   
+18.        } catch (FileNotFoundException e) {   
+19.            e.printStackTrace();   
+20.        } catch (IOException e) {   
+21.            e.printStackTrace();   
+22.        }   
+23.    }   
+24.}  
+package com.zzg.deployData;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class DeployData {
+	private File fileOut;
+
+	public void excute(String filepath) {
+		fileOut = new File(filepath);
+		this.deployUserInfoData();
+	}
+
+	public void deployUserInfoData() {
+		try {
+			new OperExcel(fileOut, "test", Object.class, "Sheet1");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+7.编写客户端 
+
+Java代码 
+1.package com.zzg.client;   
+2.  
+3.import com.zzg.deployData.DeployData;   
+4.  
+5.public class DeployClient {   
+6.    public static void main(String[] args) {   
+7.        DeployData deployData = new DeployData();   
+8.        deployData.excute("D://test.xls");   
+9.    }   
+10.}  

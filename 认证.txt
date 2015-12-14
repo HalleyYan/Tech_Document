@@ -1,0 +1,73 @@
+java 认证
+  程序员：
+      Sun Certified Java Programmer(SCJP)（初级证书Associate）
+  开发员：
+      Sun Certified Java Developer(SCJD) （中级证书Professional）
+  网站元件设计：
+      Sun Certified Web Component Developer for Java 2 Platform Enterprise Edition(SCWD)（高级证书Expert）
+  j2ee：
+        Sun Certified Enterprise Architect for J2EE Technology(SCAJ)（顶级证书Architect）
+
+oracle 认证
+  认证专员 OCA
+  数据库专家 OCP
+  认证资深专家 OCM Hyperion
+  认证解决方案设计师 SOA
+  Oracle专业DBA认证
+  Oracle网络应用开发人员认证
+  Oracle Java开发人员认证
+  Internet数据库操作人员认证
+
+linux 认证
+  RHCSA（红帽认证系统管理员）
+  RHCE（红帽认证工程师）
+  RHCA（红帽认证架构师）
+
+华为 认证
+  HCNA：Huawei Certified Network Associate华为认证网络工程师
+  HCDA：Huawei Certified Datacom Associate华为认证数据通信工程师
+  HCNP：Huawei Certified Network Professional华为认证网络资深工程师
+  HCDP：Huawei Certified Datacom Professional华为认证数据通信资深工程师
+  HCIE：Huawei Certified Internetwork Expert华为认证互联网专家
+  HCAr：Huawei Certified Architect 华为认证架构师
+
+思科（Cisco） 认证
+  CCNA认证—— 思科认证网络支持工程师
+  CCNP认证——思科认证网络高级工程师
+  CCIE认证——思科认证互联网专家
+
+Adobe 认证
+  认证产品
+     Photoshop
+     Illustrator
+     Acrobat
+     InDesign
+     Flash
+     Dreamweaver
+     Fireworks
+     AfterEffects
+     Premiere
+
+SAPR/3 认证
+   财务、流程控制、资源管理、生产日程、销售订单跟进、人力资源和应用服务发展
+
+Novell 认证
+   Novell授权网络管理员（CNA）
+   Novell授权Internet专家（CIP）
+   Novell授权网络工程师（CNE）
+   Novell授权高级工程师（Master CNE）
+
+H3C 认证
+   H3CNA（H3C Certified Network Assistant，H3C认证网络助理工程师）
+   H3CNE（H3C Certified Network Engineer，H3C认证网络工程师）
+   H3CSE Routing & Switching（H3C Certified Senior Engineer for Routing & Switching，H3C认证路由交换网络高级工程师）
+   H3CTE(H3C Certified Troubleshooting Expert，H3C认证网络排错专家)
+   H3CIE（H3C Certified Internetwork Expert，H3C认证互联网络专家）
+
+MCSD 认证（微软）
+    微软认证系统工程师 + Internet (MCSE+I)
+    微软认证系统工程师 (MCSE)
+    微软认证数据库管理员 (MCDBA)
+    微软认证解决方案开发专家 (MCSD)
+    Microsoft Certifications for IT Professionals（MCITP）全新的微软认证技术工程师 (MCTS) 和微软认证 IT 专家 (MCITP）
+    
